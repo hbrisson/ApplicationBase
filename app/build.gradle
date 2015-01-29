@@ -1,0 +1,34 @@
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+def AAVersion = '3.2'
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+    }
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "com.hbrisson.applicationbase"
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+}
+
+dependencies {
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.5@aar') {
+        // exclusion is not necessary, but generally a good idea.
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
