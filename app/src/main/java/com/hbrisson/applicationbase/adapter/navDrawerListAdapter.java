@@ -16,12 +16,19 @@ import java.util.ArrayList;
 
 /**
  * Created by hbrisson on 30/01/2015.
+ * Adapter for inflate list for navigation drawer.
  */
-public class navDrawerListAdapter extends BaseAdapter{
+public class navDrawerListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<NavDrawerItem> navDrawerItems;
 
-    public navDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems){
+    /**
+     * Construtor.
+     *
+     * @param context
+     * @param navDrawerItems
+     */
+    public navDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems) {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
     }
@@ -51,7 +58,6 @@ public class navDrawerListAdapter extends BaseAdapter{
 
         ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
         TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
-
         imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
         txtTitle.setText(navDrawerItems.get(position).getTitle());
 
