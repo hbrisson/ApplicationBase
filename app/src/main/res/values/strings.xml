@@ -3,7 +3,7 @@
 
     <string name="app_name">ApplicationBase</string>
     <string name="title">PlastProd</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_add_db">insertion db</string>
     <string name="app_description">Android drawer icon with material design animation</string>
     <string name="drawer_open">drawer_open</string>
     <string name="home">Accueil</string>
@@ -12,17 +12,18 @@
     <string name="mail">Adresse mail</string>
     <string name="password">Mot de passe</string>
     <string name="connection">Connexion</string>
+    <string name="remember_me">Se souvenir de moi</string>
 
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
-        <item>Accueil</item>
         <item>Mon compte</item>
+        <item>Accueil</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
-        <item>@drawable/abc_ic_menu_paste_mtrl_am_alpha</item>
+        <item></item>
         <item>@drawable/abc_btn_radio_material</item>
     </array>
 

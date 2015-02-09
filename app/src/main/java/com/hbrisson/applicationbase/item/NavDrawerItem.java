@@ -1,4 +1,4 @@
-package com.hbrisson.applicationbase.custom;
+package com.hbrisson.applicationbase.item;
 
 /**
  * Created by hbrisson on 30/01/2015.

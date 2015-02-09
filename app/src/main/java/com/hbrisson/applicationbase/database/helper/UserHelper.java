@@ -5,10 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.hbrisson.applicationbase.database.DataBaseHelper;
+
 /**
  * Created by hbrisson on 02/02/2015.
  */
-public class UserHelper extends SQLiteOpenHelper {
+public class UserHelper extends DataBaseHelper {
 
     public static final String TABLE_USER = "user";
     public static final String COLUMN_ID = "id";
@@ -18,26 +20,24 @@ public class UserHelper extends SQLiteOpenHelper {
     public static final String COLUMN_MAIL = "mail";
     public static final String COLUMN_PHOTO = "photo";
 
-    private static final String DATABASE_NAME = "applicationBase.db";
-    private static final int DATABASE_VERSION = 1;
+
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
             + TABLE_USER + "(" + COLUMN_ID
-            + " integer primary key autoincrement, " + COLUMN_ID
-            + " text not null ," + COLUMN_NAME
+            + " integer primary key autoincrement, " + COLUMN_NAME
             + " text not null ," + COLUMN_SURNAME
             + " text not null ," + COLUMN_MAIL
             + " text not null ," + COLUMN_PASSWORD
-            + " text not null ," + COLUMN_PHOTO + ");";
+            + " text not null ," + COLUMN_PHOTO + " text );";
 
     public UserHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(DATABASE_CREATE);
     }
 
     @Override

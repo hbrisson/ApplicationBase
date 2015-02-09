@@ -1,7 +1,6 @@
 package com.hbrisson.applicationbase;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
@@ -9,14 +8,17 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 import com.hbrisson.applicationbase.adapter.navDrawerListAdapter;
-import com.hbrisson.applicationbase.custom.NavDrawerItem;
+import com.hbrisson.applicationbase.database.model.UserDAO;
+import com.hbrisson.applicationbase.entites.User;
 import com.hbrisson.applicationbase.fragment.HomeFragment_;
 import com.hbrisson.applicationbase.fragment.MyAccountFragment_;
+import com.hbrisson.applicationbase.item.NavDrawerItem;
 import com.ikimuhendis.ldrawer.ActionBarDrawerToggle;
 import com.ikimuhendis.ldrawer.DrawerArrowDrawable;
 
@@ -32,12 +34,13 @@ import java.util.ArrayList;
  * Created by hbrisson on 30/01/2015.
  */
 @EActivity(R.layout.menu_drawer)
-public class HomeActivity extends Activity {
+public class HomeActivity extends AbstractAnimationActivity {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerArrowDrawable drawerArrow;
     private String[] navMenuTitles;
     private navDrawerListAdapter adapter;
+    public static User currentUser;
 
     @ViewById(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
@@ -49,13 +52,13 @@ public class HomeActivity extends Activity {
 
     @AfterInject
     void create() {
+        super.create();
 
         ActionBar ab = getActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setHomeButtonEnabled(true);
         }
-
 
         drawerArrow = new DrawerArrowDrawable(this) {
             @Override
@@ -100,7 +103,7 @@ public class HomeActivity extends Activity {
 
         navMenuIcons.recycle();
 
-        adapter = new navDrawerListAdapter(this, navDrawerItems);
+        adapter = new navDrawerListAdapter(this, navDrawerItems, currentUser);
         mDrawerList.setAdapter(adapter);
 
     }
@@ -133,14 +136,28 @@ public class HomeActivity extends Activity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-                mDrawerLayout.closeDrawer(mDrawerList);
-            } else {
-                mDrawerLayout.openDrawer(mDrawerList);
-            }
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
+                    mDrawerLayout.closeDrawer(mDrawerList);
+                } else {
+                    mDrawerLayout.openDrawer(mDrawerList);
+                }
+                break;
+            case R.id.action_settings:
+                User user = new User(0, "Brisson", "Hugo", "huguette", "hu.brisson@gmail.com", "yen a pas");
+                UserDAO dao = new UserDAO(this);
+                dao.insertUser(user);
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -161,7 +178,7 @@ public class HomeActivity extends Activity {
         if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
             mDrawerLayout.closeDrawer(mDrawerList);
         } else {
-           finish();
+            finish();
         }
     }
 }

@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
 import com.hbrisson.applicationbase.entites.User;
 import com.hbrisson.applicationbase.database.helper.UserHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,12 +53,14 @@ public class UserDAO {
      * @return
      */
     public boolean insertUser(User user) {
+        open();
         try {
             database.insert(UserHelper.TABLE_USER, null, values(user));
         } catch (Exception e) {
-            Log.e(this.getClass().getSimpleName(), e.getMessage());
+            Log.e(this.getClass().getSimpleName(), e.getCause().getMessage());
             return false;
         }
+        close();
         return true;
     }
 
@@ -73,12 +77,25 @@ public class UserDAO {
         return cursoToUser(cursor);
     }
 
+    public User getUser(String mail, String password) {
+        open();
+        User user = null;
+        Cursor cursor = database.rawQuery("SELECT * FROM " + UserHelper.TABLE_USER + " WHERE " + UserHelper.COLUMN_MAIL + "='" + mail + "' AND " + UserHelper.COLUMN_PASSWORD + "='" + password + "'", null);
+        cursor.moveToFirst();
+        if (cursor.getCount() != 0) {
+            user = cursoToUser(cursor);
+        }
+        close();
+        return user;
+    }
+
     /**
      * Return all users in database.
      *
      * @return
      */
     public List<User> getAllUsers() {
+        open();
         List<User> users = new ArrayList<>();
         Cursor cursor = database.query(UserHelper.TABLE_USER, allcolumns, null, null, null, null, null);
         cursor.moveToFirst();
@@ -87,6 +104,7 @@ public class UserDAO {
             cursor.moveToNext();
         }
         cursor.close();
+        close();
         return users;
     }
 
@@ -149,14 +167,13 @@ public class UserDAO {
      */
     private User cursoToUser(Cursor cursor) {
         User user = new User();
-
         user.setmId(cursor.getInt(0));
         user.setmName(cursor.getString(1));
         user.setmSurname(cursor.getString(2));
         user.setmMail(cursor.getString(3));
         user.setmPassword(cursor.getString(4));
         user.setmPhoto(cursor.getString(5));
-
+        cursor.close();
         return user;
     }
 }

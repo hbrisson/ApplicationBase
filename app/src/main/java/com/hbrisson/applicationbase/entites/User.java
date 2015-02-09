@@ -3,7 +3,7 @@ package com.hbrisson.applicationbase.entites;
 /**
  * Created by hbrisson on 02/02/2015.
  */
-public class User  {
+public class User {
 
     private int mId;
     private String mName;

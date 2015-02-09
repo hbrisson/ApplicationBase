@@ -10,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hbrisson.applicationbase.R;
-import com.hbrisson.applicationbase.custom.NavDrawerItem;
+import com.hbrisson.applicationbase.entites.User;
+import com.hbrisson.applicationbase.item.NavDrawerItem;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class navDrawerListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<NavDrawerItem> navDrawerItems;
+    private User user;
 
     /**
      * Construtor.
@@ -31,6 +33,12 @@ public class navDrawerListAdapter extends BaseAdapter {
     public navDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems) {
         this.context = context;
         this.navDrawerItems = navDrawerItems;
+    }
+
+    public navDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems, User user) {
+        this.context = context;
+        this.navDrawerItems = navDrawerItems;
+        this.user = user;
     }
 
     @Override
@@ -50,17 +58,27 @@ public class navDrawerListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.drawer_list_item, null);
+            if (position == 0) {
+                convertView = mInflater.inflate(R.layout.account_item, null);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.photo_view);
+                TextView txtName = (TextView) convertView.findViewById(R.id.name_text);
+                TextView txtMail = (TextView) convertView.findViewById(R.id.mail_text);
+                txtName.setText(user.getmName() + " " + user.getmSurname());
+                txtMail.setText(user.getmMail());
+            } else {
+                convertView = mInflater.inflate(R.layout.drawer_list_item, null);
+                ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
+                TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
+                imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
+                txtTitle.setText(navDrawerItems.get(position).getTitle());
+            }
+
+
         }
-
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
-        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
-        txtTitle.setText(navDrawerItems.get(position).getTitle());
-
         return convertView;
     }
 }
